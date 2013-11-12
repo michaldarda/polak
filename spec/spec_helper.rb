@@ -127,7 +127,7 @@ RSpec::Matchers.define :parse_as do |expected|
   end
 
   def parse(string)
-    parser = SimpleParser.new
+    parser = PolakParser.new
     [:statement, :expression].map { |root| parser.parse(string, root: root) rescue nil }.compact.first
   end
 

@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 require_relative '../parser'
 require_relative '../syntax'
 
-describe 'the Simple parser' do
+describe 'the Polak parser' do
   describe 'expressions' do
     describe 'numbers' do
       specify { '0'.should parse_as Number.new(0) }
@@ -61,8 +61,8 @@ describe 'the Simple parser' do
     end
 
     describe 'conditional' do
-      specify { 'jezeli (x < 42) { war x = 6 } albo { war x = 7 }'.should parse_as If.new(LessThan.new(Variable.new(:x), Number.new(42)), Assign.new(:x, Number.new(6)), Assign.new(:x, Number.new(7))) }
-      specify { 'jezeli (true) { war x = 6 } albo { war x = 7 }'.should parse_as If.new(Boolean.new(true), Assign.new(:x, Number.new(6)), Assign.new(:x, Number.new(7))) }
+      specify { 'jezeli (x < 42) to { war x = 6 } albo { war x = 7 }'.should parse_as If.new(LessThan.new(Variable.new(:x), Number.new(42)), Assign.new(:x, Number.new(6)), Assign.new(:x, Number.new(7))) }
+      specify { 'jezeli (true) to { war x = 6 } albo { war x = 7 }'.should parse_as If.new(Boolean.new(true), Assign.new(:x, Number.new(6)), Assign.new(:x, Number.new(7))) }
     end
 
     describe 'while' do
