@@ -14,7 +14,7 @@ grammar Polak
   end
 
   rule sequenced_statement
-    while / assign / if / do_nothing
+    while / assign / if / function / do_nothing
   end
 
   rule while
@@ -37,6 +37,14 @@ grammar Polak
     'jezeli (' condition:expression ') to { ' consequence:statement ' } albo { ' alternative:statement ' }' {
       def to_ast
         If.new(condition.to_ast, consequence.to_ast, alternative.to_ast)
+      end
+    }
+  end
+
+  rule function
+    'fn () => { ' body:statement ' }' {
+      def to_ast
+        Function.new([], body.to_ast)
       end
     }
   end

@@ -69,6 +69,10 @@ describe 'the Polak parser' do
       specify { 'dopoki (x < 5) { war x = x * 3 }'.should parse_as While.new(LessThan.new(Variable.new(:x), Number.new(5)), Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(3)))) }
     end
 
+    describe 'function' do
+      specify { 'fn () => { war x = 42 }'.should parse_as Function.new([], Assign.new(:x, Number.new(42))) }
+    end
+
     describe 'doing nothing' do
       specify { 'nic-nie-rob'.should parse_as DoNothing.new }
     end
