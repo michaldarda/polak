@@ -70,11 +70,11 @@ describe 'the Polak parser' do
     end
 
     describe 'doing nothing' do
-      specify { 'do-nothing'.should parse_as DoNothing.new }
+      specify { 'nic-nie-rob'.should parse_as DoNothing.new }
     end
 
     describe 'sequence' do
-      specify { 'do-nothing; do-nothing'.should parse_as Sequence.new(DoNothing.new(), DoNothing.new()) }
+      specify { 'nic-nie-rob; nic-nie-rob'.should parse_as Sequence.new(DoNothing.new(), DoNothing.new()) }
       specify { 'war x = 6; war y = 7; war z = x * y'.should parse_as Sequence.new(Assign.new(:x, Number.new(6)), Sequence.new(Assign.new(:y, Number.new(7)), Assign.new(:z, Multiply.new(Variable.new(:x), Variable.new(:y))))) }
     end
   end

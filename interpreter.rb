@@ -4,10 +4,13 @@ require_relative 'big_step'
 require_relative 'syntax'
 require_relative 'parser'
 
+environment = {}
+
 while(true)
+  STDOUT.flush
   print ">> "
 begin
-  Machine.new(PolakParser.new.parse(gets.chomp!).to_ast)
+  puts PolakParser.new.parse(gets.chomp!).to_ast.evaluate(environment)
 rescue Exception => e
   print e.message
 end

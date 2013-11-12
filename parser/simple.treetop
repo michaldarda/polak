@@ -26,7 +26,7 @@ grammar Polak
   end
 
   rule assign
-    'war ' name:[a-z]+ ' = ' expression {
+    'war ' name:[a-z]+ separator '=' separator expression {
       def to_ast
         Assign.new(name.text_value.to_sym, expression.to_ast)
       end
@@ -42,7 +42,7 @@ grammar Polak
   end
 
   rule do_nothing
-    'do-nothing' {
+    'nic-nie-rob' {
       def to_ast
         DoNothing.new
       end
@@ -121,5 +121,17 @@ grammar Polak
         Variable.new(text_value.to_sym)
       end
     }
+  end
+
+  rule separator
+    space / newline
+  end
+
+  rule space
+    [\t\r\s]*
+  end
+
+  rule newline
+    [\n]*
   end
 end
