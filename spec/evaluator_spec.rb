@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
-require_relative '../big_step'
+require_relative '../evaluator'
 
-describe 'the big-step operational semantics of Simple' do
+describe 'the evaluator operational semantics of Polak' do
   describe 'expressions' do
     describe 'a variable' do
       subject { Variable.new(:x) }

@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
-require_relative '../denotational'
+require_relative '../compilator'
 
-describe 'the denotational semantics of Simple' do
+describe 'the compilator semantics of Polak' do
   describe 'expressions' do
     describe 'a variable' do
       subject { Variable.new(:x) }
