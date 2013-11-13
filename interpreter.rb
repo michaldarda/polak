@@ -10,8 +10,13 @@ while(true)
   STDOUT.flush
   print "#{POLAK_VERSION} >> "
 begin
-  puts "#=> #{PolakParser.new.parse(gets.chomp!).to_ast.evaluate(environment)}"
+  last = PolakParser.new.parse(gets.chomp!).to_ast.evaluate(environment)
+
+  puts "#=> #{last}"
+  if last.is_a?(Hash)
+    environment.merge!(last)
+  end
 rescue Exception => e
-  puts e.message
+  puts "SyntaxError"
 end
 end

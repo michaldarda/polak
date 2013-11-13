@@ -186,14 +186,18 @@ describe 'the evaluator operational semantics of Polak' do
       end
     end
 
-    describe 'function' do
-      let(:environment) { { x: Number.new(1), y: Number.new(2) } }
+    describe 'function assign' do
+      let(:environment) { {} }
+      subject { FunctionAssign.new("add", Function.new(nil, Number.new(5))) }
 
-      context 'without a reducible subexpression' do
-        subject { Function.new([], Add.new(Number.new(5), Number.new(4))) }
+      it { should evaluate_to({ "add" => -> { Number.new(5) }}).within(environment) }
+    end
 
-        # it { should evaluate_to(Proc.new { |e| Add.new(Number.new(5), Number.new(4)) }).within(environment) }
-      end
+    describe 'function call' do
+      let(:environment) { FunctionAssign.new("add", Function.new(nil, Number.new(5))).evaluate({})  }
+      subject { FunctionCall.new("add") }
+
+      it { should evaluate_to(Number.new(5)).within(environment) }
     end
 
     describe 'while' do

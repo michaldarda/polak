@@ -14,7 +14,7 @@ grammar Polak
   end
 
   rule sequenced_statement
-    while / assign / if / function / do_nothing
+    while / assign / if / function / function_assign / function_call / do_nothing
   end
 
   rule while
@@ -41,10 +41,26 @@ grammar Polak
     }
   end
 
+  rule function_assign
+    'def ' name:[a-z]+ ' = ' f:function {
+      def to_ast
+        FunctionAssign.new(name.text_value.to_sym, f.to_ast)
+      end
+    }
+  end
+
   rule function
-    'fn () => { ' body:statement ' }' {
+    'fn () { ' body:statement ' }' {
       def to_ast
         Function.new([], body.to_ast)
+      end
+    }
+  end
+
+  rule function_call
+    name:[a-z]+ '()' {
+      def to_ast
+        FunctionCall.new(name.text_value.to_sym)
       end
     }
   end

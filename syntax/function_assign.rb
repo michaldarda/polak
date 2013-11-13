@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 
-class Function < Struct.new(:arguments, :body)
+class FunctionAssign < Struct.new(:name, :function)
   def to_s
-    "fn () { #{body} }"
+    "def #{name} = #{function}"
   end
 
   def inspect
