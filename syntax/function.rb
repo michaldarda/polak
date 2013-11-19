@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-class Function < Struct.new(:arguments, :body)
+class Function < Struct.new(:formal, :body)
   def to_s
     "fn () { #{body} }"
   end
