@@ -70,11 +70,11 @@ describe 'the Polak parser' do
     end
 
     describe 'function' do
-      specify { 'fn () { war x = 42 }'.should parse_as Function.new([], Assign.new(:x, Number.new(42))) }
+      specify { 'fn () { war x = 42 }'.should parse_as Function.new(:y, Assign.new(:x, Number.new(42))) }
     end
 
     describe 'function assignment' do
-      specify { 'def y = fn () { war x = 42 }'.should parse_as FunctionAssign.new(:y, Function.new(nil, Assign.new(:x, 42))) }
+      specify { 'def y = fn () { war x = 42 }'.should parse_as FunctionAssign.new(:y, Function.new([], Assign.new(:x, 42))) }
     end
 
     describe 'function call' do

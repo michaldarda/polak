@@ -2,7 +2,7 @@
 
 class DoNothing
   def to_s
-    'nic-nie-rob'
+    '...'
   end
 
   def inspect

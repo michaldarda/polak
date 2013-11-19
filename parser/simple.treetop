@@ -18,7 +18,7 @@ grammar Polak
   end
 
   rule while
-    'dopoki (' condition:expression ') { ' body:statement ' }' {
+    'dopoki' space? '(' condition:expression ') { ' body:statement ' }' {
       def to_ast
         While.new(condition.to_ast, body.to_ast)
       end
@@ -26,7 +26,7 @@ grammar Polak
   end
 
   rule assign
-    'war ' name:[a-z]+ separator '=' separator expression {
+    'war ' name:[a-z]+ space? '=' space? expression {
       def to_ast
         Assign.new(name.text_value.to_sym, expression.to_ast)
       end
@@ -42,25 +42,46 @@ grammar Polak
   end
 
   rule function_assign
-    'def ' name:[a-z]+ ' = ' f:function {
+    'def ' space? name:[a-z]+ ' = ' f:function {
       def to_ast
         FunctionAssign.new(name.text_value.to_sym, f.to_ast)
       end
     }
   end
 
+  rule parameter
+    ([A-z]+) {
+      def value
+        self.text_value
+      end
+    }
+  end
+
+  rule rest_parameters
+    (("," space? parameter)*)
+  end
+
+  rule parameters_list
+    parameter? rest_parameters {
+      def value
+        self.text_value.chomp.split(",")
+      end
+    }
+  end
+
   rule function
-    'fn () { ' body:statement ' }' {
+    'fn (' pl:parameters_list ') { ' body:statement ' }' {
+
       def to_ast
-        Function.new([], body.to_ast)
+        Function.new(pl.value, body.to_ast)
       end
     }
   end
 
   rule function_call
-    name:[a-z]+ '()' {
+    name:[a-z]+ '(' e:expression ')' {
       def to_ast
-        FunctionCall.new(name.text_value.to_sym)
+        FunctionCall.new(name.text_value.to_sym, [e.to_ast])
       end
     }
   end
@@ -120,7 +141,7 @@ grammar Polak
   end
 
   rule term
-    number / boolean / variable
+    number / boolean / variable / parameter_list
   end
 
   rule number
@@ -145,6 +166,10 @@ grammar Polak
         Variable.new(text_value.to_sym)
       end
     }
+  end
+
+  rule zero_or_more_parameters
+    expression? (','? expression)*
   end
 
   rule separator

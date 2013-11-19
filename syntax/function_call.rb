@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-class FunctionCall < Struct.new(:name)
+class FunctionCall < Struct.new(:name, :actual)
   def to_s
     "#{name}()"
   end
