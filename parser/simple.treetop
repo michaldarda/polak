@@ -26,25 +26,21 @@ grammar Polak
   end
 
   rule assign
-    'niech ' name:[a-z]+ space? '=' space? e:(expression / function) {
+    'niech ' name:[a-z]+ space? '=' space? assignment_right_side {
       def to_ast
-        Assign.new(name.text_value.to_sym, e.to_ast)
+        Assign.new(name.text_value.to_sym, assignment_right_side.to_ast)
       end
     }
+  end
+
+  rule assignment_right_side
+    function / expression
   end
 
   rule if
     'jezeli (' condition:expression ') to { ' consequence:statement ' } albo { ' alternative:statement ' }' {
       def to_ast
         If.new(condition.to_ast, consequence.to_ast, alternative.to_ast)
-      end
-    }
-  end
-
-  rule function_assign
-    'def ' space? name:[a-z]+ ' = ' f:function {
-      def to_ast
-        FunctionAssign.new(name.text_value.to_sym, f.to_ast)
       end
     }
   end

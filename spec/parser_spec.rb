@@ -73,10 +73,6 @@ describe 'the Polak parser' do
       specify { 'f() { niech x = 42 }'.should parse_as Function.new(:y, Assign.new(:x, Number.new(42))) }
     end
 
-    describe 'function assignment' do
-      specify { 'def y = f() { niech x = 42 }'.should parse_as FunctionAssign.new(:y, Function.new([], Assign.new(:x, 42))) }
-    end
-
     describe 'function call' do
       specify { 'y()'.should parse_as FunctionCall.new(:y) }
     end
