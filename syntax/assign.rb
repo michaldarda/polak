@@ -2,7 +2,7 @@
 
 class Assign < Struct.new(:name, :expression)
   def to_s
-    "war #{name} = #{expression}"
+    "niech #{name} = #{expression}"
   end
 
   def inspect

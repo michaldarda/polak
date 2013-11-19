@@ -62,7 +62,7 @@ describe 'the syntax of Simple' do
     describe 'do-nothing' do
       subject { DoNothing.new }
 
-      it { should look_like 'nic-nie-rob' }
+      it { should look_like '...' }
     end
 
     describe 'assignment' do
@@ -70,7 +70,7 @@ describe 'the syntax of Simple' do
 
       its(:name) { should == :x }
       its(:expression) { should == Number.new(5) }
-      it { should look_like 'war x = 5' }
+      it { should look_like 'niech x = 5' }
     end
 
     describe 'sequence' do
@@ -78,7 +78,7 @@ describe 'the syntax of Simple' do
 
       its(:first) { should == DoNothing.new }
       its(:second) { should == Assign.new(:x, Number.new(1)) }
-      it { should look_like 'nic-nie-rob; war x = 1' }
+      it { should look_like '...; niech x = 1' }
     end
 
     describe 'if' do
@@ -87,7 +87,7 @@ describe 'the syntax of Simple' do
       its(:condition) { should == LessThan.new(Number.new(3), Number.new(4)) }
       its(:consequence) { should == Assign.new(:x, Number.new(3)) }
       its(:alternative) { should == Assign.new(:y, Number.new(3)) }
-      it { should look_like 'jezeli (3 < 4) to { war x = 3 } albo { war y = 3 }'}
+      it { should look_like 'jezeli (3 < 4) to { niech x = 3 } albo { niech y = 3 }'}
     end
 
     describe 'while' do
@@ -95,7 +95,7 @@ describe 'the syntax of Simple' do
 
       its(:condition) { should == LessThan.new(Variable.new(:x), Number.new(5)) }
       its(:body) { should == Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(3))) }
-      it { should look_like 'dopoki (x < 5) { war x = x * 3 }' }
+      it { should look_like 'dopoki (x < 5) { niech x = x * 3 }' }
     end
   end
 end

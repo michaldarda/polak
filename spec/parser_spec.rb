@@ -56,25 +56,25 @@ describe 'the Polak parser' do
 
   describe 'statements' do
     describe 'assignment' do
-      specify { 'war x = 42'.should parse_as Assign.new(:x, Number.new(42)) }
-      specify { 'war y = 6 * 7'.should parse_as Assign.new(:y, Multiply.new(Number.new(6), Number.new(7))) }
+      specify { 'niech x = 42'.should parse_as Assign.new(:x, Number.new(42)) }
+      specify { 'niech y = 6 * 7'.should parse_as Assign.new(:y, Multiply.new(Number.new(6), Number.new(7))) }
     end
 
     describe 'conditional' do
-      specify { 'jezeli (x < 42) to { war x = 6 } albo { war x = 7 }'.should parse_as If.new(LessThan.new(Variable.new(:x), Number.new(42)), Assign.new(:x, Number.new(6)), Assign.new(:x, Number.new(7))) }
-      specify { 'jezeli (true) to { war x = 6 } albo { war x = 7 }'.should parse_as If.new(Boolean.new(true), Assign.new(:x, Number.new(6)), Assign.new(:x, Number.new(7))) }
+      specify { 'jezeli (x < 42) to { niech x = 6 } albo { niech x = 7 }'.should parse_as If.new(LessThan.new(Variable.new(:x), Number.new(42)), Assign.new(:x, Number.new(6)), Assign.new(:x, Number.new(7))) }
+      specify { 'jezeli (true) to { niech x = 6 } albo { niech x = 7 }'.should parse_as If.new(Boolean.new(true), Assign.new(:x, Number.new(6)), Assign.new(:x, Number.new(7))) }
     end
 
     describe 'while' do
-      specify { 'dopoki (x < 5) { war x = x * 3 }'.should parse_as While.new(LessThan.new(Variable.new(:x), Number.new(5)), Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(3)))) }
+      specify { 'dopoki (x < 5) { niech x = x * 3 }'.should parse_as While.new(LessThan.new(Variable.new(:x), Number.new(5)), Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(3)))) }
     end
 
     describe 'function' do
-      specify { 'fn () { war x = 42 }'.should parse_as Function.new(:y, Assign.new(:x, Number.new(42))) }
+      specify { 'fn () { niech x = 42 }'.should parse_as Function.new(:y, Assign.new(:x, Number.new(42))) }
     end
 
     describe 'function assignment' do
-      specify { 'def y = fn () { war x = 42 }'.should parse_as FunctionAssign.new(:y, Function.new([], Assign.new(:x, 42))) }
+      specify { 'def y = fn () { niech x = 42 }'.should parse_as FunctionAssign.new(:y, Function.new([], Assign.new(:x, 42))) }
     end
 
     describe 'function call' do
@@ -82,12 +82,12 @@ describe 'the Polak parser' do
     end
 
     describe 'doing nothing' do
-      specify { 'nic-nie-rob'.should parse_as DoNothing.new }
+      specify { '...'.should parse_as DoNothing.new }
     end
 
     describe 'sequence' do
-      specify { 'nic-nie-rob; nic-nie-rob'.should parse_as Sequence.new(DoNothing.new(), DoNothing.new()) }
-      specify { 'war x = 6; war y = 7; war z = x * y'.should parse_as Sequence.new(Assign.new(:x, Number.new(6)), Sequence.new(Assign.new(:y, Number.new(7)), Assign.new(:z, Multiply.new(Variable.new(:x), Variable.new(:y))))) }
+      specify { '...; ...'.should parse_as Sequence.new(DoNothing.new(), DoNothing.new()) }
+      specify { 'niech x = 6; niech y = 7; niech z = x * y'.should parse_as Sequence.new(Assign.new(:x, Number.new(6)), Sequence.new(Assign.new(:y, Number.new(7)), Assign.new(:z, Multiply.new(Variable.new(:x), Variable.new(:y))))) }
     end
   end
 end
