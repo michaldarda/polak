@@ -2,7 +2,7 @@
 
 class Function < Struct.new(:formal, :body)
   def to_s
-    "fn () { #{body} }"
+    "f() { #{body} }"
   end
 
   def inspect

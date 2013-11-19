@@ -26,9 +26,9 @@ grammar Polak
   end
 
   rule assign
-    'niech ' name:[a-z]+ space? '=' space? expression {
+    'niech ' name:[a-z]+ space? '=' space? e:(expression / function) {
       def to_ast
-        Assign.new(name.text_value.to_sym, expression.to_ast)
+        Assign.new(name.text_value.to_sym, e.to_ast)
       end
     }
   end
@@ -70,7 +70,7 @@ grammar Polak
   end
 
   rule function
-    'fn (' pl:parameters_list ') { ' body:statement ' }' {
+    'f(' pl:parameters_list ') { ' body:statement ' }' {
 
       def to_ast
         Function.new(pl.value, body.to_ast)
