@@ -4,12 +4,17 @@ class FunctionCall
   def evaluate(environment)
     function = environment.fetch(name)
 
-    formal = function.fetch(:formal)                       # like ["x", "y", "z" ...]
+    # ["x", "y", "z" ...]
+    formal = function.fetch(:formal)
 
     formal ||= []
+    # [1, 2, 3 ...]
     actual ||= []
 
-    actual = actual.map do |a| a.evaluate(environment) end # like [1, 2, 3 ...]
+    # evaluate each parameter in current environment
+    actual = actual.map do |a|
+      a.evaluate(environment)
+    end
 
     if formal.size != actual.size
       raise RuntimeError, "#{name}: Oczekiwano #{formal.count} argumentów, dostałem #{actual.count}"
