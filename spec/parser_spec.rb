@@ -70,11 +70,11 @@ describe 'the Polak parser' do
     end
 
     describe 'function' do
-      specify { 'f() { niech x = 42 }'.should parse_as Function.new(:y, Assign.new(:x, Number.new(42))) }
+      specify { 'f() { niech x = 42 }'.should parse_as Function.new([], Assign.new(:x, Number.new(42))) }
     end
 
     describe 'function call' do
-      specify { 'y()'.should parse_as FunctionCall.new(:y) }
+      specify { 'y()'.should parse_as FunctionCall.new(:y, []) }
     end
 
     describe 'doing nothing' do
