@@ -5,6 +5,10 @@ class FunctionCall
     function = environment.fetch(name)
 
     formal = function.fetch(:formal)                       # like ["x", "y", "z" ...]
+
+    formal ||= []
+    actual ||= []
+
     actual = actual.map do |a| a.evaluate(environment) end # like [1, 2, 3 ...]
 
     if formal.size != actual.size
