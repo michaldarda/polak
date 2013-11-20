@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/michaldarda]/polak.png)](https://travis-ci.org/michaldarda/polak)
-
 # Polak
 
 Polak is a toy programming language build on top of Ruby language.
