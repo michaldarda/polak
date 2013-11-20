@@ -14,11 +14,11 @@ grammar Polak
   end
 
   rule sequenced_statement
-    while / assign / if / function / function_assign / function_call / do_nothing
+    while / assign / if / function / function_call / do_nothing
   end
 
   rule while
-    'dopoki (' condition:expression ') { ' body:statement ' }' {
+    'dopoki' space? '(' condition:expression ') { ' body:statement ' }' {
       def to_ast
         While.new(condition.to_ast, body.to_ast)
       end
@@ -26,11 +26,15 @@ grammar Polak
   end
 
   rule assign
-    'war ' name:[a-z]+ separator '=' separator expression {
+    'niech ' name:[a-z]+ space? '=' space? assignment_right_side {
       def to_ast
-        Assign.new(name.text_value.to_sym, expression.to_ast)
+        Assign.new(name.text_value.to_sym, assignment_right_side.to_ast)
       end
     }
+  end
+
+  rule assignment_right_side
+    function / expression
   end
 
   rule if
@@ -41,32 +45,53 @@ grammar Polak
     }
   end
 
-  rule function_assign
-    'def ' name:[a-z]+ ' = ' f:function {
-      def to_ast
-        FunctionAssign.new(name.text_value.to_sym, f.to_ast)
+  rule parameter
+    ([A-z]+) {
+      def value
+        self.text_value
+      end
+    }
+  end
+
+  rule rest_parameters
+    (("," space? parameter)*)
+  end
+
+  rule parameters_list
+    parameter? rest_parameters {
+      def value
+        self.text_value.chomp.split(",")
       end
     }
   end
 
   rule function
-    'fn () { ' body:statement ' }' {
+    'f(' pl:parameters_list ') { ' body:statement ' }' {
+
       def to_ast
-        Function.new([], body.to_ast)
+        Function.new(pl.value, body.to_ast)
       end
     }
   end
 
   rule function_call
-    name:[a-z]+ '()' {
+    name:[a-z]+ '(' e:(expression? ("," expression)*) ')' {
+
       def to_ast
-        FunctionCall.new(name.text_value.to_sym)
+        first = e.elements[0].to_ast rescue []
+
+        actual ||= e.elements[1].elements.inject([first]) do |result, e|
+          result << e.elements.last.to_ast
+          result
+        end.compact.flatten
+
+        FunctionCall.new(name.text_value.to_sym, actual)
       end
     }
   end
 
   rule do_nothing
-    'nic-nie-rob' {
+    '...' {
       def to_ast
         DoNothing.new
       end
