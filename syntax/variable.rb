@@ -6,6 +6,6 @@ class Variable < Struct.new(:name)
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end

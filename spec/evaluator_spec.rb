@@ -187,7 +187,7 @@ describe 'the evaluator operational semantics of Polak' do
     end
 
     describe 'function call' do
-      let(:environment) { FunctionAssign.new("add", Function.new(nil, Number.new(5))).evaluate({})  }
+      let(:environment) { Assign.new("add", Function.new(nil, Number.new(5))).evaluate({})  }
       subject { FunctionCall.new("add") }
 
       it { should evaluate_to(Number.new(5)).within(environment) }

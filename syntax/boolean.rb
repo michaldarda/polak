@@ -6,6 +6,6 @@ class Boolean < Struct.new(:value)
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end

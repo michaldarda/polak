@@ -6,6 +6,6 @@ class Number < Struct.new(:value)
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end

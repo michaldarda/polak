@@ -6,6 +6,6 @@ class While < Struct.new(:condition, :body)
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end

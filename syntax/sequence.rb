@@ -6,6 +6,6 @@ class Sequence < Struct.new(:first, :second)
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end

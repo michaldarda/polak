@@ -2,10 +2,11 @@
 
 class FunctionCall < Struct.new(:name, :actual)
   def to_s
-    "#{name}()"
+    actual_string = actual.join(",") rescue ""
+    "#{name}(#{actual_string})"
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end

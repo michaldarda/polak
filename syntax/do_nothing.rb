@@ -6,7 +6,7 @@ class DoNothing
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 
   def ==(other_statement)

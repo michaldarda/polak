@@ -6,6 +6,6 @@ class LessThan < Struct.new(:left, :right)
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end

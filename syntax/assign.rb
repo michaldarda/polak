@@ -6,6 +6,6 @@ class Assign < Struct.new(:name, :expression)
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end

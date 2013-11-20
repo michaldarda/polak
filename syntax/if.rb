@@ -6,6 +6,6 @@ class If < Struct.new(:condition, :consequence, :alternative)
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end

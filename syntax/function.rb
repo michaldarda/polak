@@ -6,6 +6,6 @@ class Function < Struct.new(:formal, :body)
   end
 
   def inspect
-    "«#{self}»"
+    ">#{self}<"
   end
 end
