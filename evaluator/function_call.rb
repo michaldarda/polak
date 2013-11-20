@@ -13,6 +13,7 @@ class FunctionCall
     end
 
     # map formal parameters to the actual ones
+    actual_parameters = {}
     formal.each_with_index do |f, i|
       actual_parameters.merge!({ f.to_sym => new_actual[i] })
     end

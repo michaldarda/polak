@@ -14,7 +14,7 @@ grammar Polak
   end
 
   rule sequenced_statement
-    while / assign / if / function / function_assign / function_call / do_nothing
+    while / assign / if / function / function_call / do_nothing
   end
 
   rule while
@@ -75,9 +75,17 @@ grammar Polak
   end
 
   rule function_call
-    name:[a-z]+ '(' e:expression ')' {
+    name:[a-z]+ '(' e:(expression? ("," expression)*) ')' {
+
       def to_ast
-        FunctionCall.new(name.text_value.to_sym, [e.to_ast])
+        first = e.elements[0].to_ast rescue []
+
+        actual ||= e.elements[1].elements.inject([first]) do |result, e|
+          result << e.elements.last.to_ast
+          result
+        end.compact.flatten
+
+        FunctionCall.new(name.text_value.to_sym, actual)
       end
     }
   end
@@ -137,7 +145,7 @@ grammar Polak
   end
 
   rule term
-    number / boolean / variable / parameter_list
+    number / boolean / variable
   end
 
   rule number
@@ -162,10 +170,6 @@ grammar Polak
         Variable.new(text_value.to_sym)
       end
     }
-  end
-
-  rule zero_or_more_parameters
-    expression? (','? expression)*
   end
 
   rule separator
