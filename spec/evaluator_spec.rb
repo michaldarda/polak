@@ -192,12 +192,5 @@ describe 'the evaluator operational semantics of Polak' do
 
       it { should evaluate_to(Number.new(5)).within(environment) }
     end
-
-    describe 'while' do
-      subject { While.new(LessThan.new(Variable.new(:x), Number.new(5)), Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(3)))) }
-      let(:environment) { { x: Number.new(1) } }
-
-      it { should evaluate_to(x: Number.new(9) ).within(environment) }
-    end
   end
 end

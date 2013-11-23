@@ -14,15 +14,7 @@ grammar Polak
   end
 
   rule sequenced_statement
-    while / assign / if / function / function_call / do_nothing
-  end
-
-  rule while
-    'dopoki' space? '(' condition:expression ') { ' body:statement ' }' {
-      def to_ast
-        While.new(condition.to_ast, body.to_ast)
-      end
-    }
+    assign / if / function / function_call / do_nothing
   end
 
   rule assign

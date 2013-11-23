@@ -385,20 +385,5 @@ describe 'the compilator semantics of Polak' do
         end
       end
     end
-
-    describe 'while' do
-      subject { While.new(LessThan.new(Variable.new(:x), Number.new(5)), Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(3)))) }
-      let(:environment) { { x: 1 } }
-
-      context in: :ruby do
-        it { should be_denoted_by '-> e { while (-> e { (-> e { e[:x] }).call(e) < (-> e { 5 }).call(e) }).call(e); e = (-> e { e.merge({ :x => (-> e { (-> e { e[:x] }).call(e) * (-> e { 3 }).call(e) }).call(e) }) }).call(e); end; e }'}
-        it { should mean(x: 9).within(environment) }
-      end
-
-      context in: :javascript do
-        it { should be_denoted_by 'function (e) { while (function (e) { return (function (e) { return e["x"]; }(e)) < (function (e) { return 5; }(e)); }(e)) { e = (function (e) { e["x"] = (function (e) { return (function (e) { return e["x"]; }(e)) * (function (e) { return 3; }(e)); }(e)); return e; }(e)); } return e; }' }
-        it { should mean(x: 9).within(environment) }
-      end
-    end
   end
 end

@@ -89,13 +89,5 @@ describe 'the syntax of Simple' do
       its(:alternative) { should == Assign.new(:y, Number.new(3)) }
       it { should look_like 'jezeli (3 < 4) to { niech x = 3 } albo { niech y = 3 }'}
     end
-
-    describe 'while' do
-      subject { While.new(LessThan.new(Variable.new(:x), Number.new(5)), Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(3)))) }
-
-      its(:condition) { should == LessThan.new(Variable.new(:x), Number.new(5)) }
-      its(:body) { should == Assign.new(:x, Multiply.new(Variable.new(:x), Number.new(3))) }
-      it { should look_like 'dopoki (x < 5) { niech x = x * 3 }' }
-    end
   end
 end
