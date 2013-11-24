@@ -1,4 +1,5 @@
 require_relative '../syntax/subtract'
+require_relative 'number'
 
 class Subtract
   def evaluate(environment)

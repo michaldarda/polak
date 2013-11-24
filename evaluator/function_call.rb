@@ -25,7 +25,6 @@ class FunctionCall
     function_body        = function.fetch(:body)
     function_environment = function.fetch(:environment)
 
-    lexical_scope = function_environment.merge(parameters).merge(name => function)
-    function_body.evaluate(lexical_scope)
+    function_body.evaluate(function_environment.merge(parameters).merge(name => function))
   end
 end

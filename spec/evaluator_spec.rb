@@ -242,14 +242,11 @@ describe 'the evaluator operational semantics of Polak' do
     #   it { should evaluate_to(Number.new(6)).within(environment) }
     # end
 
-    describe 'prosta tail rekursja ( niepoprawna funkcja silnia )' do
-      describe 'recursive function call 4' do
-        let(:environment) { Assign.new("silnia", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(1)), Number.new(1), FunctionCall.new("silnia", [Subtract.new(Variable.new(:n), Number.new(1))])))).evaluate({})  }
-        subject { FunctionCall.new("silnia", [Number.new(3)]) }
+    describe 'recursive function call 4' do
+      let(:environment) { Assign.new("silnia", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(1)), Number.new(1), FunctionCall.new("silnia", [Subtract.new(Variable.new(:n), Number.new(1))])))).evaluate({})  }
+      subject { FunctionCall.new("silnia", [Number.new(3)]) }
 
-        it { should evaluate_to(Number.new(6)).within(environment) }
-      end
+      it { should evaluate_to(Number.new(6)).within(environment) }
     end
-
   end
 end
