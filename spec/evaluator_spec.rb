@@ -222,10 +222,34 @@ describe 'the evaluator operational semantics of Polak' do
     end
 
     describe 'recursive function call 2' do
-      let(:environment) { Assign.new("factorial", Function.new(["n"], If.new(Equals.new(Variable.new(:n), Number.new(0)), Number.new(1), Multiply.new(Variable.new(:n), FunctionCall.new("factorial", [Subtract.new(Variable.new(:n), 1)]))))).evaluate({})  }
+      let(:environment) { Assign.new("factorial", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(0)), Number.new(1), Multiply.new(Variable.new(:n), FunctionCall.new("factorial", [Subtract.new(Variable.new(:n), Number.new(1))]))))).evaluate({})  }
+      subject { FunctionCall.new("factorial", [Number.new(1)]) }
+
+      it { should evaluate_to(Number.new(1)).within(environment) }
+    end
+
+    describe 'recursive function call 3' do
+      let(:environment) { Assign.new("factorial", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(1)), Number.new(1), Multiply.new(Variable.new(:n), FunctionCall.new("factorial", [Subtract.new(Variable.new(:n), Number.new(1))]))))).evaluate({})  }
       subject { FunctionCall.new("factorial", [Number.new(2)]) }
 
       it { should evaluate_to(Number.new(2)).within(environment) }
     end
+
+    # describe 'recursive function call 4' do
+    #   let(:environment) { Assign.new("factorial", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(1)), Number.new(1), Multiply.new(Variable.new(:n), FunctionCall.new("factorial", [Subtract.new(Variable.new(:n), Number.new(1))]))))).evaluate({})  }
+    #   subject { FunctionCall.new("factorial", [Number.new(3)]) }
+
+    #   it { should evaluate_to(Number.new(6)).within(environment) }
+    # end
+
+    describe 'prosta tail rekursja ( niepoprawna funkcja silnia )' do
+      describe 'recursive function call 4' do
+        let(:environment) { Assign.new("silnia", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(1)), Number.new(1), FunctionCall.new("silnia", [Subtract.new(Variable.new(:n), Number.new(1))])))).evaluate({})  }
+        subject { FunctionCall.new("silnia", [Number.new(3)]) }
+
+        it { should evaluate_to(Number.new(6)).within(environment) }
+      end
+    end
+
   end
 end
