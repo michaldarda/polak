@@ -7,13 +7,9 @@ class FunctionCall
     # ["x", "y", "z" ...]
     formal = function.fetch(:formal)
 
-    formal ||= []
-    # [1, 2, 3 ...]
-    actual ||= []
-
     # evaluate each parameter in current environment
-    actual = actual.map do |a|
-      a.evaluate(environment)
+    actual.map! do |param|
+      param.evaluate(environment)
     end
 
     if formal.size != actual.size
@@ -28,6 +24,9 @@ class FunctionCall
 
     function_body        = function.fetch(:body)
     function_environment = function.fetch(:environment)
+
+    puts function_environment.merge(parameters).inspect
+
     function_body.evaluate(function_environment.merge(parameters))
   end
 end

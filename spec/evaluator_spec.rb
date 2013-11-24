@@ -124,6 +124,20 @@ describe 'the evaluator operational semantics of Polak' do
       it { should evaluate_to(environment).within(environment) }
     end
 
+    describe 'equals' do
+      context 'when does not equal' do
+        subject { Equals.new(Number.new(5), Number.new(6)) }
+
+        it { should evaluate_to(Boolean.new(false)) }
+      end
+
+      context 'when equals' do
+        subject { Equals.new(Number.new(5), Number.new(5)) }
+
+        it { should evaluate_to(Boolean.new(true)) }
+      end
+    end
+
     describe 'assignment' do
       let(:environment) { { x: Number.new(1), y: Number.new(2) } }
 
@@ -187,10 +201,31 @@ describe 'the evaluator operational semantics of Polak' do
     end
 
     describe 'function call' do
-      let(:environment) { Assign.new("add", Function.new(nil, Number.new(5))).evaluate({})  }
-      subject { FunctionCall.new("add") }
+      let(:environment) { Assign.new("add", Function.new([], Number.new(5))).evaluate({})  }
+      subject { FunctionCall.new("add", []) }
 
       it { should evaluate_to(Number.new(5)).within(environment) }
+    end
+
+    describe 'function call with one parameter' do
+      let(:environment) { Assign.new("square", Function.new(["x"], Multiply.new(Variable.new(:x), Variable.new(:x)))).evaluate({})  }
+      subject { FunctionCall.new("square", [Number.new(2)]) }
+
+      it { should evaluate_to(Number.new(4)).within(environment) }
+    end
+
+    describe 'recursive function call 1' do
+      let(:environment) { Assign.new("factorial", Function.new(["n"], If.new(Equals.new(Variable.new(:n), Number.new(0)), Number.new(1), Multiply.new(Variable.new(:n), FunctionCall.new("factorial", [Subtract.new(Variable.new(:n), 1)]))))).evaluate({})  }
+      subject { FunctionCall.new("factorial", [Number.new(0)]) }
+
+      it { should evaluate_to(Number.new(1)).within(environment) }
+    end
+
+    describe 'recursive function call 2' do
+      let(:environment) { Assign.new("factorial", Function.new(["n"], If.new(Equals.new(Variable.new(:n), Number.new(0)), Number.new(1), Multiply.new(Variable.new(:n), FunctionCall.new("factorial", [Subtract.new(Variable.new(:n), 1)]))))).evaluate({})  }
+      subject { FunctionCall.new("factorial", [Number.new(2)]) }
+
+      it { should evaluate_to(Number.new(2)).within(environment) }
     end
   end
 end

@@ -1,4 +1,4 @@
-puts "Witaj w interpreterze jezyka Polak (c) 2013 by Michal Darda (MIT)"
+puts "Witaj w interpreterze jezyka Polak (c) 2013 Michal Darda (MIT)"
 require_relative 'evaluator'
 require_relative 'syntax'
 require_relative 'parser'
@@ -17,7 +17,7 @@ begin
     environment.merge!(last)
   end
 # rescue Exception => e
-  puts e.message
+  # puts e.message
 #   puts "SyntaxError"
 end
 end
