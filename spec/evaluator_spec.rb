@@ -59,6 +59,34 @@ describe 'the evaluator operational semantics of Polak' do
       end
     end
 
+    describe 'subtraction' do
+      context 'without reducible subexpressions' do
+        subject { Subtract.new(Number.new(8), Number.new(2)) }
+
+        it { should evaluate_to Number.new(6) }
+      end
+
+      context 'with a reducible subexpression' do
+        context 'on the left' do
+          subject { Subtract.new(Subtract.new(Number.new(6), Number.new(3)), Number.new(3)) }
+
+          it { should evaluate_to Number.new(0) }
+        end
+
+        context 'on the right' do
+          subject { Subtract.new(Number.new(10), Subtract.new(Number.new(12), Number.new(3))) }
+
+          it { should evaluate_to Number.new(1) }
+        end
+
+        context 'on both sides' do
+          subject { Subtract.new(Subtract.new(Number.new(1), Number.new(2)), Subtract.new(Number.new(3), Number.new(4))) }
+
+          it { should evaluate_to Number.new(0) }
+        end
+      end
+    end
+
     describe 'multiplication' do
       context 'without reducible subexpressions' do
         subject { Multiply.new(Number.new(2), Number.new(3)) }
@@ -83,6 +111,34 @@ describe 'the evaluator operational semantics of Polak' do
           subject { Multiply.new(Multiply.new(Number.new(2), Number.new(3)), Multiply.new(Number.new(4), Number.new(5))) }
 
           it { should evaluate_to Number.new(120) }
+        end
+      end
+    end
+
+    describe 'multiplication' do
+      context 'without reducible subexpressions' do
+        subject { Divide.new(Number.new(2), Number.new(3)) }
+
+        it { should evaluate_to Number.new(0) }
+      end
+
+      context 'with a reducible subexpression' do
+        context 'on the left' do
+          subject { Divide.new(Divide.new(Number.new(16), Number.new(8)), Number.new(2)) }
+
+          it { should evaluate_to Number.new(1) }
+        end
+
+        context 'on the right' do
+          subject { Divide.new(Number.new(18), Divide.new(Number.new(6), Number.new(3))) }
+
+          it { should evaluate_to Number.new(9) }
+        end
+
+        context 'on both sides' do
+          subject { Divide.new(Divide.new(Number.new(8), Number.new(2)), Divide.new(Number.new(4), Number.new(2))) }
+
+          it { should evaluate_to Number.new(2) }
         end
       end
     end
@@ -242,11 +298,11 @@ describe 'the evaluator operational semantics of Polak' do
     #   it { should evaluate_to(Number.new(6)).within(environment) }
     # end
 
-    describe 'recursive function call 4' do
-      let(:environment) { Assign.new("silnia", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(1)), Number.new(1), FunctionCall.new("silnia", [Subtract.new(Variable.new(:n), Number.new(1))])))).evaluate({})  }
-      subject { FunctionCall.new("silnia", [Number.new(3)]) }
+    # describe 'recursive function call 4' do
+    #   let(:environment) { Assign.new("silnia", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(1)), Number.new(1), FunctionCall.new("silnia", [Subtract.new(Variable.new(:n), Number.new(1))])))).evaluate({})  }
+    #   subject { FunctionCall.new("silnia", [Number.new(3)]) }
 
-      it { should evaluate_to(Number.new(6)).within(environment) }
-    end
+    #   it { should evaluate_to(Number.new(6)).within(environment) }
+    # end
   end
 end

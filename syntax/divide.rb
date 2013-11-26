@@ -1,4 +1,4 @@
-class Division < Struct.new(:left, :right)
+class Divide < Struct.new(:left, :right)
   def to_s
     "#{left} / #{right}"
   end
