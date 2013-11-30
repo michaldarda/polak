@@ -5,7 +5,7 @@ class Function
     environment.merge({
       :formal      => formal,
       :body        => body,
-      :environment => environment
+      :environment => environment.clone
     })
   end
 end
