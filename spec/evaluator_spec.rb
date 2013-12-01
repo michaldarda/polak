@@ -291,18 +291,30 @@ describe 'the evaluator operational semantics of Polak' do
       it { should evaluate_to(Number.new(2)).within(environment) }
     end
 
-    # describe 'recursive function call 4' do
-    #   let(:environment) { Assign.new("factorial", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(1)), Number.new(1), Multiply.new(Variable.new(:n), FunctionCall.new("factorial", [Subtract.new(Variable.new(:n), Number.new(1))]))))).evaluate({})  }
-    #   subject { FunctionCall.new("factorial", [Number.new(3)]) }
+    describe 'recursive function call 4' do
+      let(:environment) do 
+        Assign.new("factorial", 
+                   Function.new([:n], 
+                                If.new(Equals.new(Variable.new(:n), Number.new(1)), 
+                                       Number.new(1), 
+                                       Multiply.new(Variable.new(:n), FunctionCall.new("factorial", [Subtract.new(Variable.new(:n), Number.new(1))]))))).evaluate({})
+      end
+      subject { FunctionCall.new("factorial", [Number.new(3)]) }
 
-    #   it { should evaluate_to(Number.new(6)).within(environment) }
-    # end
+      it { should evaluate_to(Number.new(6)).within(environment) }
+    end
 
-    # describe 'recursive function call 5' do
-    #   let(:environment) { Assign.new("silnia", Function.new([:n], If.new(Equals.new(Variable.new(:n), Number.new(1)), Number.new(1), FunctionCall.new("silnia", [Subtract.new(Variable.new(:n), Number.new(1))])))).evaluate({})  }
-    #   subject { FunctionCall.new("silnia", [Number.new(3)]) }
+    describe 'recursive function call 5' do
+      let(:environment) do
+        Assign.new("silnia", 
+                   Function.new([:n], 
+                                If.new(Equals.new(Variable.new(:n), Number.new(1)), 
+                                       Number.new(1), 
+                                       Multiply.new(Variable.new(:n), FunctionCall.new("silnia", [Subtract.new(Variable.new(:n), Number.new(1))]))))).evaluate({})
+      end
+      subject { FunctionCall.new("silnia", [Number.new(5)]) }
 
-    #   it { should evaluate_to(Number.new(6)).within(environment) }
-    # end
+      it { should evaluate_to(Number.new(120)).within(environment) }
+    end
   end
 end
