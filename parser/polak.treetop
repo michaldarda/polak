@@ -14,13 +14,21 @@ grammar Polak
   end
 
   rule sequenced_statement
-    assign / if / function / function_call / do_nothing
+    assign / force_assign / if / function / function_call / do_nothing
   end
 
   rule assign
     'niech ' name:[a-z]+ space? '=' space? assignment_right_side {
       def to_ast
         Assign.new(name.text_value.to_sym, assignment_right_side.to_ast)
+      end
+    }
+  end
+
+  rule force_assign
+    'niech! ' name:[a-z]+ space? '=' space? assignment_right_side {
+      def to_ast
+        ForceAssign.new(name.text_value.to_sym, assignment_right_side.to_ast)
       end
     }
   end

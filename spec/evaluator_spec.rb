@@ -206,17 +206,17 @@ describe 'the evaluator operational semantics of Polak' do
       end
     end
 
-    describe 'assignment' do
+    describe 'force assignment' do
       let(:environment) { { x: Number.new(1), y: Number.new(2) } }
 
       context 'without a reducible subexpression' do
-        subject { Assign.new(:x, Number.new(5)) }
+        subject { ForceAssign.new(:x, Number.new(5)) }
 
         it { should evaluate_to(x: Number.new(5), y: Number.new(2)).within(environment) }
       end
 
       context 'with a reducible subexpression' do
-        subject { Assign.new(:x, Add.new(Number.new(2), Number.new(3))) }
+        subject { ForceAssign.new(:x, Add.new(Number.new(2), Number.new(3))) }
 
         it { should evaluate_to(x: Number.new(5), y: Number.new(2)).within(environment) }
       end
@@ -245,7 +245,7 @@ describe 'the evaluator operational semantics of Polak' do
         end
 
         context 'in both positions' do
-          subject { Sequence.new(Assign.new(:x, Number.new(1)), Assign.new(:x, Number.new(2))) }
+          subject { Sequence.new(Assign.new(:x, Number.new(1)), ForceAssign.new(:x, Number.new(2))) }
 
           it { should evaluate_to(x: Number.new(2), y: Number.new(3)).within(environment) }
         end
@@ -256,13 +256,13 @@ describe 'the evaluator operational semantics of Polak' do
       let(:environment) { { x: Number.new(1), y: Number.new(2) } }
 
       context 'without a reducible subexpression' do
-        subject { If.new(Boolean.new(false), Assign.new(:x, Number.new(3)), Assign.new(:y, Number.new(3))) }
+        subject { If.new(Boolean.new(false), Assign.new(:x, Number.new(3)), ForceAssign.new(:y, Number.new(3))) }
 
         it { should evaluate_to(x: Number.new(1), y: Number.new(3)).within(environment) }
       end
 
       context 'with a reducible subexpression' do
-        subject { If.new(LessThan.new(Number.new(3), Number.new(4)), Assign.new(:x, Number.new(3)), Assign.new(:y, Number.new(3))) }
+        subject { If.new(LessThan.new(Number.new(3), Number.new(4)), ForceAssign.new(:x, Number.new(3)), ForceAssign.new(:y, Number.new(3))) }
 
         it { should evaluate_to(x: Number.new(3), y: Number.new(2)).within(environment) }
       end

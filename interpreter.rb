@@ -16,8 +16,8 @@ begin
   if last.is_a?(Hash)
     environment.merge!(last)
   end
-# rescue Exception => e
-  # puts e.message
-#   puts "SyntaxError"
+rescue Exception => e
+  puts e.message
+  puts "SyntaxError"
 end
 end
