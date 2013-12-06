@@ -172,15 +172,7 @@ grammar Polak
     }
   end
 
-  rule separator
-    space / newline
-  end
-
   rule space
     [\t\r\s]*
-  end
-
-  rule newline
-    [\n]*
   end
 end
