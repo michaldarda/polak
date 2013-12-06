@@ -292,11 +292,11 @@ describe 'the evaluator operational semantics of Polak' do
     end
 
     describe 'recursive function call 4' do
-      let(:environment) do 
-        Assign.new("factorial", 
-                   Function.new([:n], 
-                                If.new(Equals.new(Variable.new(:n), Number.new(1)), 
-                                       Number.new(1), 
+      let(:environment) do
+        Assign.new("factorial",
+                   Function.new([:n],
+                                If.new(Equals.new(Variable.new(:n), Number.new(1)),
+                                       Number.new(1),
                                        Multiply.new(Variable.new(:n), FunctionCall.new("factorial", [Subtract.new(Variable.new(:n), Number.new(1))]))))).evaluate({})
       end
       subject { FunctionCall.new("factorial", [Number.new(3)]) }
@@ -306,15 +306,25 @@ describe 'the evaluator operational semantics of Polak' do
 
     describe 'recursive function call 5' do
       let(:environment) do
-        Assign.new("silnia", 
-                   Function.new([:n], 
-                                If.new(Equals.new(Variable.new(:n), Number.new(1)), 
-                                       Number.new(1), 
+        Assign.new("silnia",
+                   Function.new([:n],
+                                If.new(Equals.new(Variable.new(:n), Number.new(1)),
+                                       Number.new(1),
                                        Multiply.new(Variable.new(:n), FunctionCall.new("silnia", [Subtract.new(Variable.new(:n), Number.new(1))]))))).evaluate({})
       end
       subject { FunctionCall.new("silnia", [Number.new(5)]) }
 
       it { should evaluate_to(Number.new(120)).within(environment) }
+    end
+
+    describe 'function as function arguments' do
+      let(:environment) do
+        Assign.new("nested",
+                   Function.new([:f], FunctionCall.new(:f, []))).evaluate({})
+      end
+      subject { FunctionCall.new("nested", [Function.new([], Number.new(5))]) }
+
+      it { should evaluate_to(Number.new(5)).within(environment) }
     end
   end
 end
