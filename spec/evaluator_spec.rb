@@ -17,6 +17,18 @@ describe 'the evaluator operational semantics of Polak' do
       it { should evaluate_to itself }
     end
 
+    describe 'nil' do
+      subject(:itself) { Nil.new }
+
+      it { should evaluate_to itself }
+    end
+
+    describe 'list' do
+      subject(:itself) { List.new(5, Nil.new) }
+
+      it { should evaluate_to itself }
+    end
+
     describe 'booleans' do
       describe 'true' do
         subject(:itself) { Boolean.new(true) }
@@ -323,6 +335,20 @@ describe 'the evaluator operational semantics of Polak' do
                    Function.new([:f], FunctionCall.new(:f, []))).evaluate({})
       end
       subject { FunctionCall.new("nested", [Function.new([], Number.new(5))]) }
+
+      it { should evaluate_to(Number.new(5)).within(environment) }
+    end
+
+    describe 'function returning closures' do
+      let(:environment) do
+        env = Assign.new("closure_fun", Function.new([],
+                                    Function.new([],
+                                      Number.new(5)))).evaluate({})
+
+        Assign.new("returned_closure", FunctionCall.new("closure_fun", [])).evaluate(env)
+      end
+
+      subject { FunctionCall.new("returned_closure", []) }
 
       it { should evaluate_to(Number.new(5)).within(environment) }
     end
