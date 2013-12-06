@@ -145,7 +145,15 @@ grammar Polak
   end
 
   rule term
-    number / boolean / variable
+    pstring / number / boolean / variable
+  end
+
+  rule pstring
+    '/' p '/' {
+      def to_ast
+        PString.new(p.text_value)
+      end
+    }
   end
 
   rule number
