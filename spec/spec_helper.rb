@@ -58,64 +58,6 @@ RSpec::Matchers.define :evaluate_to do |expected|
   end
 end
 
-RSpec::Matchers.define :be_denoted_by do |expected|
-  match do |subject|
-    actual(subject) == expected
-  end
-
-  def actual(subject)
-    subject.send(:"to_#{denotation_language}")
-  end
-
-  def denotation_language
-    example.metadata[:in] || :ruby
-  end
-
-  failure_message_for_should do |subject|
-    "expected that #{subject.inspect} would be denoted by #{expected.inspect}, but it is denoted by #{actual(subject).inspect}"
-  end
-end
-
-RSpec::Matchers.define :mean do |expected|
-  match do |subject|
-    actual(subject) == expected_for_denotation_language(expected)
-  end
-
-  def actual(subject)
-    case denotation_language
-    when :ruby
-      eval(subject.to_ruby)[environment]
-    when :javascript
-      ExecJS.eval("#{subject.to_javascript}(#{ExecJS::JSON.encode(environment)})")
-    end
-  end
-
-  def environment
-    @environment || {}
-  end
-
-  def denotation_language
-    example.metadata[:in] || :ruby
-  end
-
-  def expected_for_denotation_language(expected)
-    case denotation_language
-    when :ruby
-      expected
-    when :javascript
-      ExecJS::JSON.decode(ExecJS::JSON.encode(expected))
-    end
-  end
-
-  chain :within do |environment|
-    @environment = environment
-  end
-
-  failure_message_for_should do |subject|
-    "expected that #{subject.inspect} would reduce to #{expected_for_denotation_language(expected).inspect} within #{environment.inspect}, but it reduces to #{actual(subject).inspect}"
-  end
-end
-
 RSpec::Matchers.define :parse_as do |expected|
   match do |subject|
     actual(subject) == expected
