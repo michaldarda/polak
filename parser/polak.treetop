@@ -101,7 +101,17 @@ grammar Polak
   end
 
   rule expression
-    less_than
+    less_than / greater_than / greater_or_equal_than / less_than_or_equal
+  end
+
+  rule less_than
+    left:add ' < ' right:less_than {
+      def to_ast
+        LessThan.new(left.to_ast, right.to_ast)
+      end
+    }
+    /
+    add
   end
 
   rule less_than
