@@ -101,43 +101,65 @@ grammar Polak
   end
 
   rule expression
-    less_than / greater_than / greater_or_equal_than / less_than_or_equal
+    and
   end
 
-  rule less_than
-    left:add ' < ' right:less_than {
+  rule comparison_operator
+    "==" /  ">=" / "<=" / ">" / "<"
+  end
+
+  rule additive_operator
+    "+" / "-"
+  end
+
+  rule multitive_operator
+    "*" / "/"
+  end
+
+  rule and
+    left:comparison " i " right:comparison {
       def to_ast
-        LessThan.new(left.to_ast, right.to_ast)
+        And.new(left.to_ast, right.to_ast)
       end
     }
     /
-    add
+    or
   end
 
-  rule less_than
-    left:add ' < ' right:less_than {
+  rule or
+    left:comparison " lub " right:comparison {
       def to_ast
-        LessThan.new(left.to_ast, right.to_ast)
+        Or.new(left.to_ast, right.to_ast)
       end
     }
     /
-    add
+    comparison
   end
 
-  rule add
-    left:multiply ' + ' right:add {
+  rule comparison
+    left:additive ' ' comparison_operator ' ' right:comparison {
       def to_ast
-        Add.new(left.to_ast, right.to_ast)
+        Comparison.new(comparison_operator.text_value.to_sym, left.to_ast, right.to_ast)
       end
     }
     /
-    multiply
+    additive
   end
 
-  rule multiply
-    left:brackets ' * ' right:multiply {
+  rule additive
+    left:multitive ' ' additive_operator ' ' right:additive {
       def to_ast
-        Multiply.new(left.to_ast, right.to_ast)
+        Additive.new(additive_operator.text_value.to_sym, left.to_ast, right.to_ast)
+      end
+    }
+    /
+    multitive
+  end
+
+  rule multitive
+    left:brackets ' ' multitive_operator ' ' right:multitive {
+      def to_ast
+        Multitive.new(multitive_operator.text_value.to_sym, left.to_ast, right.to_ast)
       end
     }
     /
@@ -159,7 +181,7 @@ grammar Polak
   end
 
   rule pstring
-    '/' p '/' {
+    ["] p ["] {
       def to_ast
         PString.new(p.text_value)
       end
