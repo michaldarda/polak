@@ -34,13 +34,21 @@ grammar Polak
   end
 
   rule assignment_right_side
-    function / expression
+    p_module / function / expression
   end
 
   rule if
     'jezeli (' condition:expression ') to { ' consequence:statement ' } albo { ' alternative:statement ' }' {
       def to_ast
         If.new(condition.to_ast, consequence.to_ast, alternative.to_ast)
+      end
+    }
+  end
+
+  rule p_module
+    'modul {' sequence '}' {
+      def to_ast
+        PModule.new(sequence.to_ast)
       end
     }
   end
@@ -177,13 +185,57 @@ grammar Polak
   end
 
   rule term
-    list / pstring / number / boolean / variable
+    list / list_syntatic_sugar / list_head / list_tail / pstring / number / boolean / variable
+  end
+
+  rule parameter
+    ([A-z]+) {
+      def value
+        self.text_value
+      end
+    }
+  end
+
+  rule rest_parameters
+    (("," space? parameter)*)
+  end
+
+  rule parameters_list
+    parameter? rest_parameters {
+      def value
+        self.text_value.chomp.split(",")
+      end
+    }
+  end
+
+  rule list_syntatic_sugar
+    'Doklej(' head:sequence "," tail:sequence ')' {
+      def to_ast
+        List.new(head.to_ast, tail.to_ast)
+      end
+    }
   end
 
   rule list
-    'Lista(' head:term "," tail:term ')' {
+    'Lista(' head:sequence "," tail:sequence ')' {
       def to_ast
         List.new(head.to_ast, tail.to_ast)
+      end
+    }
+  end
+
+  rule list_head
+    'Lista.glowa(' sequence ')' {
+      def to_ast
+        ListHead.new(sequence.to_ast)
+      end
+    }
+  end
+
+  rule list_tail
+    'Lista.ogon(' sequence ')' {
+      def to_ast
+        ListTail.new(sequence.to_ast)
       end
     }
   end

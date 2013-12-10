@@ -1,6 +1,6 @@
 class List < Struct.new(:head, :tail)
   def to_s
-    "List(#{head},#{tail})"
+    "Lista(#{head},#{tail})"
   end
 
   def inspect

@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-class PModule < Struct.new(:name, :content)
+class PModule < Struct.new(:content)
   def to_s
-    "moduł #{name} = { #{content} }"
+    "modul { #{content} }"
   end
 
   def inspect
