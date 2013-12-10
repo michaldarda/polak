@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-class LessThan < Struct.new(:left, :right)
+class And < Struct.new(:left, :right)
   def to_s
-    "#{left} < #{right}"
+    "#{left} i #{right}"
   end
 
   def inspect

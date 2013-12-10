@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-class Multiply < Struct.new(:left, :right)
+class Or < Struct.new(:left, :right)
   def to_s
-    "#{left} * #{right}"
+    "#{left} lub #{right}"
   end
 
   def inspect

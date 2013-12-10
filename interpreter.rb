@@ -12,6 +12,7 @@ while(true)
 begin
   last = PolakParser.new.parse(gets.chomp!).to_ast.evaluate(environment)
 
+  puts last
   puts "#=> #{last.values.last}"
 
   if last.is_a?(Hash)

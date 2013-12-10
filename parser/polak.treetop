@@ -101,33 +101,65 @@ grammar Polak
   end
 
   rule expression
-    less_than
+    and
   end
 
-  rule less_than
-    left:add ' < ' right:less_than {
+  rule comparison_operator
+    "==" /  ">=" / "<=" / ">" / "<"
+  end
+
+  rule additive_operator
+    "+" / "-"
+  end
+
+  rule multitive_operator
+    "*" / "/"
+  end
+
+  rule and
+    left:comparison " i " right:comparison {
       def to_ast
-        LessThan.new(left.to_ast, right.to_ast)
+        And.new(left.to_ast, right.to_ast)
       end
     }
     /
-    add
+    or
   end
 
-  rule add
-    left:multiply ' + ' right:add {
+  rule or
+    left:comparison " lub " right:comparison {
       def to_ast
-        Add.new(left.to_ast, right.to_ast)
+        Or.new(left.to_ast, right.to_ast)
       end
     }
     /
-    multiply
+    comparison
   end
 
-  rule multiply
-    left:brackets ' * ' right:multiply {
+  rule comparison
+    left:additive ' ' comparison_operator ' ' right:comparison {
       def to_ast
-        Multiply.new(left.to_ast, right.to_ast)
+        Comparison.new(comparison_operator.text_value.to_sym, left.to_ast, right.to_ast)
+      end
+    }
+    /
+    additive
+  end
+
+  rule additive
+    left:multitive ' ' additive_operator ' ' right:additive {
+      def to_ast
+        Additive.new(additive_operator.text_value.to_sym, left.to_ast, right.to_ast)
+      end
+    }
+    /
+    multitive
+  end
+
+  rule multitive
+    left:brackets ' ' multitive_operator ' ' right:multitive {
+      def to_ast
+        Multitive.new(multitive_operator.text_value.to_sym, left.to_ast, right.to_ast)
       end
     }
     /
@@ -145,21 +177,45 @@ grammar Polak
   end
 
   rule term
-    number / boolean / variable
+    list / pstring / number / boolean / variable
+  end
+
+  rule list
+    'Lista(' head:term "," tail:term ')' {
+      def to_ast
+        List.new(head.to_ast, tail.to_ast)
+      end
+    }
+  end
+
+  rule pstring
+    '"' ([^"\\] / "\\" . )* '"' {
+      def to_ast
+        PString.new(self.text_value)
+      end
+    }
   end
 
   rule number
-    [0-9]+ {
+    ('+' / '-')? [0-9]+ {
       def to_ast
         Number.new(text_value.to_i)
       end
     }
   end
 
-  rule boolean
-    ('true' / 'false') ![a-z] {
+  rule tuple
+    'Krotka(' hash ')' {
       def to_ast
-        Boolean.new(text_value == 'true')
+        Tuple.new({})
+      end
+    }
+  end
+
+  rule boolean
+    ('prawda' / 'falsz') ![a-z] {
+      def to_ast
+        Boolean.new(text_value == 'prawda')
       end
     }
   end

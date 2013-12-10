@@ -34,7 +34,7 @@ describe 'the syntax of Simple' do
     end
 
     describe 'addition' do
-      subject { Add.new(Number.new(1), Number.new(2)) }
+      subject { Additive.new(:+, Number.new(1), Number.new(2)) }
 
       its(:left) { should == Number.new(1) }
       its(:right) { should == Number.new(2) }
@@ -42,7 +42,7 @@ describe 'the syntax of Simple' do
     end
 
     describe 'multiplication' do
-      subject { Multiply.new(Number.new(2), Number.new(3)) }
+      subject { Multitive.new(:*, Number.new(2), Number.new(3)) }
 
       its(:left) { should == Number.new(2) }
       its(:right) { should == Number.new(3) }
@@ -50,7 +50,7 @@ describe 'the syntax of Simple' do
     end
 
     describe 'less than' do
-      subject { LessThan.new(Number.new(1), Number.new(2)) }
+      subject { Comparison.new(:<, Number.new(1), Number.new(2)) }
 
       its(:left) { should == Number.new(1) }
       its(:right) { should == Number.new(2) }
@@ -82,9 +82,9 @@ describe 'the syntax of Simple' do
     end
 
     describe 'if' do
-      subject { If.new(LessThan.new(Number.new(3), Number.new(4)), Assign.new(:x, Number.new(3)), Assign.new(:y, Number.new(3))) }
+      subject { If.new(Comparison.new(:<, Number.new(3), Number.new(4)), Assign.new(:x, Number.new(3)), Assign.new(:y, Number.new(3))) }
 
-      its(:condition) { should == LessThan.new(Number.new(3), Number.new(4)) }
+      its(:condition) { should == Comparison.new(:<, Number.new(3), Number.new(4)) }
       its(:consequence) { should == Assign.new(:x, Number.new(3)) }
       its(:alternative) { should == Assign.new(:y, Number.new(3)) }
       it { should look_like 'jezeli (3 < 4) to { niech x = 3 } albo { niech y = 3 }'}
