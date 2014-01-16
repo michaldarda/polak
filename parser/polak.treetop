@@ -185,33 +185,13 @@ grammar Polak
   end
 
   rule term
-    list / list_syntatic_sugar / list_head / list_tail / pstring / number / boolean / variable
+    list / list_head / list_tail / pstring / number / boolean / variable
   end
 
   rule parameter
     ([A-z]+) {
       def value
         self.text_value
-      end
-    }
-  end
-
-  rule rest_parameters
-    (("," space? parameter)*)
-  end
-
-  rule parameters_list
-    parameter? rest_parameters {
-      def value
-        self.text_value.chomp.split(",")
-      end
-    }
-  end
-
-  rule list_syntatic_sugar
-    'Doklej(' head:sequence "," tail:sequence ')' {
-      def to_ast
-        List.new(head.to_ast, tail.to_ast)
       end
     }
   end
@@ -252,14 +232,6 @@ grammar Polak
     ('+' / '-')? [0-9]+ {
       def to_ast
         Number.new(text_value.to_i)
-      end
-    }
-  end
-
-  rule tuple
-    'Krotka(' hash ')' {
-      def to_ast
-        Tuple.new({})
       end
     }
   end

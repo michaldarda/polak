@@ -90,6 +90,16 @@ To run all tests (specs), run
     1
     #=> 1
 
+    # Function calling
+
+    0.1.0 >> niech y = f(x) { x * x }
+
+    0.1.0 >> y(2)
+    4
+    #=> 4
+
+    niech silnia = f(n) { jezeli (n == 1) to { 1 } albo { n * silnia(n - 1) } }
+s
     # Data structures
 
     0.1.0 >> Lista(1,2)
@@ -106,6 +116,16 @@ To run all tests (specs), run
     #=> 1
 
     0.1.0 >> Lista.ogon(Lista(1,2))
+    2
+    #=> 2
+
+    0.1.0 >> niech x = 2
+    {:x=>>2<}
+    #=> 2
+    0.1.0 >> niech y = 4
+    {:x=>>2<, :y=>>4<}
+    #=> 4
+    0.1.0 >> Lista.glowa(Lista(x,y))
     2
     #=> 2
 

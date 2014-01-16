@@ -69,6 +69,14 @@ describe 'the Polak parser' do
       specify { 'f() { niech x = 42 }'.should parse_as Function.new([], Assign.new(:x, Number.new(42))) }
     end
 
+    describe 'factorial function' do
+      specify { 'f(n) { jezeli (n == 1) to { 1 } albo { n * (silnia(n - 1)) } }'.should parse_as Function.new([:n],
+                                If.new(Comparison.new(:==, Variable.new(:n), Number.new(1)),
+                                       Number.new(1),
+                                       Multitive.new(:*, Variable.new(:n), FunctionCall.new("factorial", [Additive.new(:-, Variable.new(:n), Number.new(1))]))))
+                                     }
+    end
+
     describe 'function call' do
       specify { 'y()'.should parse_as FunctionCall.new(:y, []) }
     end
