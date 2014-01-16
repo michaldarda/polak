@@ -2,7 +2,7 @@
 
 class Function < Struct.new(:formal, :body)
   def to_s
-    "f() { #{body} }"
+    "f(#{formal.join(",")}) { #{body} }"
   end
 
   def inspect

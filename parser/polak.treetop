@@ -14,7 +14,7 @@ grammar Polak
   end
 
   rule sequenced_statement
-    assign / force_assign / if / function / function_call / do_nothing
+    assign / force_assign / if / function / do_nothing
   end
 
   rule assign
@@ -82,21 +82,6 @@ grammar Polak
     }
   end
 
-  rule function_call
-    name:[a-z]+ '(' e:(expression? ("," expression)*) ')' {
-
-      def to_ast
-        first = e.elements[0].to_ast rescue []
-
-        actual ||= e.elements[1].elements.inject([first]) do |result, e|
-          result << e.elements.last.to_ast
-          result
-        end.compact.flatten
-
-        FunctionCall.new(name.text_value.to_sym, actual)
-      end
-    }
-  end
 
   rule do_nothing
     '...' {
@@ -185,7 +170,7 @@ grammar Polak
   end
 
   rule term
-    nil / is_nil / list / list_head / list_tail / pstring / number / boolean / variable
+    nil / is_nil / list / list_head / list_tail / pstring / number / boolean / function_call / variable
   end
 
   rule variable
@@ -265,6 +250,23 @@ grammar Polak
     ('prawda' / 'falsz') ![a-z] {
       def to_ast
         Boolean.new(text_value == 'prawda')
+      end
+    }
+  end
+
+
+  rule function_call
+    name:[a-z]+ '(' e:(expression? ("," expression)*) ')' {
+
+      def to_ast
+        first = e.elements[0].to_ast rescue []
+
+        actual ||= e.elements[1].elements.inject([first]) do |result, e|
+          result << e.elements.last.to_ast
+          result
+        end.compact.flatten
+
+        FunctionCall.new(name.text_value.to_sym, actual)
       end
     }
   end

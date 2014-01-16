@@ -57,6 +57,9 @@ To run all tests (specs), run
     4
     #=> 4
 
+    0.1.0 >> .
+    nic
+
     # Variable assignments
 
     0.1.0 >> niech x = 2
@@ -98,8 +101,22 @@ To run all tests (specs), run
     4
     #=> 4
 
-    niech silnia = f(n) { jezeli (n == 1) to { 1 } albo { n * silnia(n - 1) } }
-s
+    0.1.0 >> niech silnia = f(n) { jezeli (n == 1) to { 1 } albo { n * (silnia(n - 1)) } }
+    {:formal=>["n"], :body=>>jezeli (n == 1) to { 1 } albo { n * silnia(n - 1) }<, :environment=>{}, :silnia=>{:formal=>["n"], :body=>>jezeli (n == 1) to { 1 } albo { n * silnia(n - 1) }<, :environment=>{:formal=>["n"], :body=>>jezeli (n == 1) to { 1 } albo { n * silnia(n - 1) }<, :environment=>{}}}}
+    0.1.0 >> silnia(1)
+    1
+    0.1.0 >> silnia(2)
+    2
+    0.1.0 >> silnia(3)
+    6
+    0.1.0 >> silnia(4)
+    24
+
+    0.1.0 >> niech suma = f(x,y) { x + y }
+    {:suma=>{:formal=>["x", "y"], :body=>>x + y<, :environment=>{}}}
+    0.1.0 >> suma(1,2)
+    3
+
     # Data structures
 
     0.1.0 >> Lista(1,2)
@@ -119,6 +136,9 @@ s
     2
     #=> 2
 
+    0.1.0 >> Lista.koniec?(.)
+    true
+
     0.1.0 >> niech x = 2
     {:x=>>2<}
     #=> 2
@@ -128,6 +148,9 @@ s
     0.1.0 >> Lista.glowa(Lista(x,y))
     2
     #=> 2
+
+    0.1.0 >> Lista(1,Lista(2,.))
+    Lista(1,Lista(2,nic))
 
 # Changelog
 

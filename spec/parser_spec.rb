@@ -73,7 +73,7 @@ describe 'the Polak parser' do
       specify { 'f(n) { jezeli (n == 1) to { 1 } albo { n * (silnia(n - 1)) } }'.should parse_as Function.new([:n],
                                 If.new(Comparison.new(:==, Variable.new(:n), Number.new(1)),
                                        Number.new(1),
-                                       Multitive.new(:*, Variable.new(:n), FunctionCall.new("factorial", [Additive.new(:-, Variable.new(:n), Number.new(1))]))))
+                                       Multitive.new(:*, Variable.new(:n), FunctionCall.new("silnia", [Additive.new(:-, Variable.new(:n), Number.new(1))]))))
                                      }
     end
 
