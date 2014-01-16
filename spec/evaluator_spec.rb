@@ -24,7 +24,7 @@ describe 'the evaluator operational semantics of Polak' do
     end
 
     describe 'list' do
-      subject(:itself) { List.new(5, Nil.new) }
+      subject(:itself) { List.new(Number.new(5), Nil.new) }
 
       it { should evaluate_to itself }
     end

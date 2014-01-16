@@ -2,6 +2,6 @@ require_relative '../syntax/list'
 
 class List
   def evaluate(environment)
-    self
+    List.new(head.evaluate(environment), tail.evaluate(environment))
   end
 end
