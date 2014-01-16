@@ -185,7 +185,7 @@ grammar Polak
   end
 
   rule term
-     list / list_head / list_tail / pstring / number / boolean / variable
+    nil / is_nil / list / list_head / list_tail / pstring / number / boolean / variable
   end
 
   rule variable
@@ -224,6 +224,23 @@ grammar Polak
     'Lista.ogon(' sequence ')' {
       def to_ast
         ListTail.new(sequence.to_ast)
+      end
+    }
+  end
+
+  rule nil
+    '.' {
+      def to_ast
+        Nil.new
+      end
+    }
+  end
+
+  rule is_nil
+    'Lista.koniec?(' sequence ')' {
+      def to_ast
+      puts sequence
+        IsNil.new(sequence.to_ast)
       end
     }
   end
