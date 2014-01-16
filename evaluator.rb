@@ -1,3 +1,4 @@
+require_relative 'ext/object'
 require_relative 'evaluator/additive'
 require_relative 'evaluator/assign'
 require_relative 'evaluator/boolean'

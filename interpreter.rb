@@ -9,7 +9,7 @@ environment = {}
 loop do
   STDOUT.flush
   print "#{POLAK_VERSION} >> "
-begin
+# begin
   last = PolakParser.new.parse(gets.chomp!).to_ast.evaluate(environment)
 
   puts last
@@ -18,8 +18,8 @@ begin
   if last.is_a?(Hash)
     environment.merge!(last)
   end
-rescue Exception => e
-  puts e.message
+# rescue Exception => e
+  # puts e.message
   puts "SyntaxError"
-end
+# end
 end

@@ -54,7 +54,7 @@ grammar Polak
   end
 
   rule parameter
-    ([A-z]+) {
+    sequence {
       def value
         self.text_value
       end

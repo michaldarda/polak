@@ -117,6 +117,13 @@ To run all tests (specs), run
     0.1.0 >> suma(1,2)
     3
 
+    0.1.0 >> niech odwroc = f(l) { jezeli (Lista.koniec?(l)) to { . } albo { Lista(odwroc(Lista.ogon(l)),Lista.glowa(l)) } }
+    {:odwroc=>{:formal=>["l"], :body=>>jezeli (Lista.koniec?) to { nic } albo { Lista(odwroc(l),l) }<, :environment=>{}}}
+    0.1.0 >> odwroc(Lista(1,.))
+    Lista(nic,1)
+    0.1.0 >> odwroc(Lista(1,Lista(2,Lista(3,.))))
+    Lista(Lista(Lista(nic,3),2),1)
+
     # Data structures
 
     0.1.0 >> Lista(1,2)
