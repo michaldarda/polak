@@ -3,6 +3,6 @@ require_relative 'list'
 
 class ListTail
   def evaluate(environment)
-    list.tail.evaluate(environment)
+    list.evaluate(environment).tail.evaluate(environment)
   end
 end

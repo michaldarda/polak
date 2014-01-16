@@ -185,7 +185,15 @@ grammar Polak
   end
 
   rule term
-    list / list_head / list_tail / pstring / number / boolean / variable
+     list / list_head / list_tail / pstring / number / boolean / variable
+  end
+
+  rule variable
+    [a-z]+ {
+      def to_ast
+        Variable.new(text_value.to_sym)
+      end
+    }
   end
 
   rule parameter
@@ -205,9 +213,9 @@ grammar Polak
   end
 
   rule list_head
-    'Lista.glowa(' sequence ')' {
+    'Lista.glowa(' s:sequence ')' {
       def to_ast
-        ListHead.new(sequence.to_ast)
+        ListHead.new(s.to_ast)
       end
     }
   end
@@ -240,14 +248,6 @@ grammar Polak
     ('prawda' / 'falsz') ![a-z] {
       def to_ast
         Boolean.new(text_value == 'prawda')
-      end
-    }
-  end
-
-  rule variable
-    [a-z]+ {
-      def to_ast
-        Variable.new(text_value.to_sym)
       end
     }
   end

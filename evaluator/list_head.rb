@@ -3,6 +3,6 @@ require_relative 'list'
 
 class ListHead
   def evaluate(environment)
-    list.head.evaluate(environment)
+    list.evaluate(environment).head.evaluate(environment)
   end
 end
