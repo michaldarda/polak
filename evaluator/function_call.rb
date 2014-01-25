@@ -10,10 +10,10 @@ class FunctionCall
     function_environment = function.fetch(:environment)
     parameters           = evaluate_params(environment)
 
-    current_env = function_environment.merge(parameters)
+    function_scope = function_environment.merge(parameters)
       .merge(name => function)
 
-    function_body.evaluate(current_env)
+    function_body.evaluate(function_scope)
   end
 
   private
